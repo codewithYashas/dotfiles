@@ -23,12 +23,12 @@ echo -n "Changing to the $dir directory ..."
 cd $dir
 echo "done"
 
-# move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks from the homedir to any files in the ~/dotfiles directory specified in $files
+# move any existing dotfiles in homedir to dotfiles_old directory
 for file in $files; do
-    echo "Moving any existing dotfiles from ~ to $olddir"
-    mv ~/.$file ~/dotfiles_old/
-    echo "Creating symlink to $file in home directory."
-    ln -s $dir/$file ~/.$file
+    if [ -e ~/.$file ]; then
+        echo "Moving existing ~/.$file to $olddir/"
+        mv ~/.$file ~/dotfiles_old/
+    fi
 done
 
 install_zsh () {
@@ -36,7 +36,8 @@ install_zsh () {
 if [ -f /bin/zsh -o -f /usr/bin/zsh ]; then
     # Clone my oh-my-zsh repository from GitHub only if it isn't already present
     if [[ ! -d $dir/oh-my-zsh/ ]]; then
-        git clone https://github.com/ohmyzsh/ohmyzsh
+        echo "Cloning Oh My Zsh"
+        git clone https://github.com/ohmyzsh/ohmyzsh $dir/oh-my-zsh
     fi
     # Set the default shell to zsh if it isn't currently set to zsh
     if [[ ! $(echo $SHELL) == $(which zsh) ]]; then
@@ -63,4 +64,14 @@ else
 fi
 }
 
+# Run the zsh installation function
+echo "Running Oh My Zsh installation..."
 install_zsh
+
+# Now create the symlinks for all files
+for file in $files; do
+    echo "Creating symlink to $file in home directory."
+    ln -s $dir/$file ~/.$file
+done
+
+echo "Setup complete!"
