@@ -2,6 +2,6 @@
     "desc": "omz-is-brewed",
     "settings": {
         "theme": "agnoster",
-        "plugins-not-working": "git"
+        "plugins-not-working": "git direnv"
         }
 }
