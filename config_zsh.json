@@ -1,0 +1,7 @@
+{
+    "desc": "omz-is-brewed",
+    "settings": {
+        "theme": "agnoster",
+        "plugins-not-working": "git"
+        }
+}
