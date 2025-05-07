@@ -34,6 +34,6 @@ if [[ -o login ]]; then
   fi
 
   # N) Remove duplicate entries in $PATH
-  typeset -U path   # zsh will re-synthesise $PATH from the array $path
+  typeset -U path   # re-synthesise $PATH from the array $path
 
 fi
