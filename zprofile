@@ -28,6 +28,11 @@ if [[ -o login ]]; then
     eval "$(direnv hook zsh)"
   fi
 
+  # added for LM Studio CLI (lms)
+  if [[ -d "$HOME/.lmstudio/bin" ]]; then
+    export PATH="$HOME/.lmstudio/bin:$PATH"
+  fi
+
   # N) Remove duplicate entries in $PATH
   typeset -U path   # re-synthesise $PATH from the array $path
 
