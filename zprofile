@@ -1,11 +1,34 @@
-# load brew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# Only run in login shells
+if [[ -o login ]]; then
 
-# load pyenv
+  # 1) Save very first inherited PATH
+  if [[ -z "$_ORIGINAL_PATH" ]]; then
+    export _ORIGINAL_PATH=$PATH 
+  fi
 
-export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+  # 2) Reset $PATH to that seed on every new login shell
+  export PATH=$_ORIGINAL_PATH
 
-# hook direnv
-eval "$(direnv hook zsh)"
+  # 3) Conditionally add tools
+
+  # homebrew
+  if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
+
+  # pyenv
+  if command -v pyenv &>/dev/null; then
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+  fi
+
+  # direnv
+  if command -v direnv &>/dev/null; then
+    eval "$(direnv hook zsh)"
+  fi
+
+  # N) Remove duplicate entries in $PATH
+  typeset -U path   # re-synthesise $PATH from the array $path
+
+fi
