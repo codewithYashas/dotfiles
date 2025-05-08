@@ -9,7 +9,7 @@
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
 # files="bashrc vimrc vim zshrc oh-my-zsh private scrotwm.conf Xresources"    # list of files/folders to symlink in homedir
-files="bashrc zshrc oh-my-zsh"
+files="bashrc zshrc"
 
 ##########
 
@@ -38,7 +38,16 @@ if [ -f /bin/zsh -o -f /usr/bin/zsh ]; then
     if [[ ! -d $dir/oh-my-zsh/ ]]; then
         echo "Cloning Oh My Zsh"
         git clone https://github.com/ohmyzsh/ohmyzsh $dir/oh-my-zsh
+        
+        # Create symlink after successful clone
+        echo "Creating symlink to oh-my-zsh in home directory."
+        ln -sf $dir/oh-my-zsh ~/.oh-my-zsh
+    elif [[ ! -L ~/.oh-my-zsh || $(readlink ~/.oh-my-zsh) != "$dir/oh-my-zsh" ]]; then
+        # If oh-my-zsh directory exists but symlink is missing or incorrect
+        echo "Creating symlink to oh-my-zsh in home directory."
+        ln -sf $dir/oh-my-zsh ~/.oh-my-zsh
     fi
+    
     # Set the default shell to zsh if it isn't currently set to zsh
     if [[ ! $(echo $SHELL) == $(which zsh) ]]; then
         chsh -s $(which zsh)
