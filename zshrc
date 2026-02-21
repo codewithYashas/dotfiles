@@ -8,6 +8,12 @@ SAVEHIST=1000
 bindkey -e
 # End of lines configured by zsh-newuser-install
 
+# Initialize pyenv
+if command -v pyenv &>/dev/null; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+  fi
+  
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -75,7 +81,7 @@ ZSH_THEME=$(awk '/"theme":/ {gsub(/.*"theme": "|",?$/, ""); print}' ~/.config_zs
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git virtualenv)
 
 source $ZSH/oh-my-zsh.sh
 
