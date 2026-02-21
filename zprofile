@@ -20,8 +20,6 @@ if [[ -o login ]]; then
   if command -v pyenv &>/dev/null; then
     export PATH="$HOME/.pyenv/bin:$PATH"
     eval "$(pyenv init --path)"
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
   fi
 
   # direnv
